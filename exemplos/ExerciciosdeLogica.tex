@@ -1,0 +1,787 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{xypic}
+\usepackage{enumitem}
+\usepackage[mathscr]{euscript}
+\usepackage{bussproofs}
+\usepackage{color}
+\usepackage{graphics}
+\usepackage{multicol}
+
+\usepackage[brazil]{babel}
+\usepackage{microtype} % pacote para ajuste fino de espaçamento, para melhor alinhamento
+%\usepackage[urw-garamond]{mathdesign} % fonte Garamond com fonte para matemática, tem que instalar do CTAN
+ \usepackage{mathpazo} % fonte Palatino com suporte para matemática
+
+\usepackage{sectsty} % Formatação da fonte das seções
+\allsectionsfont{\fontfamily{phv}\fontseries{b}\selectfont}
+
+\newtheorem{exrcc}{Exercício}[subsection] %Definição de um ambiente para os enunciados de exercício
+\newtheorem{exmpl}{Exemplo}[subsection] %Definição de um ambiente para exemplos numerados
+
+
+
+\title{\fontfamily{phv}\fontsize{28}{28}\fontseries{b}\selectfont%Helvetica Bold tamanho 28 para o título
+Exercícios de Lógica Proposicional}
+\author{Prof. Leonardo Cisneiros}
+
+\begin{document}
+
+\maketitle
+
+\section{Folha de Cola}
+
+% A formatação dessa seção está péssima, precisa de ajustes no alinhamento.
+
+
+\subsection{Tabelas-verdade}
+
+\begin{multicols}{2}
+
+\textbf{Negação}\\
+\begin{tabular}{c|c}
+ $\phi$ & $\neg\phi$ \\
+ \hline
+ V	&	F \\
+ F	&	V \\
+\end{tabular}
+
+
+\textbf{Implicação}\\
+\begin{tabular}{c|c|c}
+$\phi$ & $\rightarrow$ & $\psi$ \\
+ \hline
+ V	&	V	&	V  \\
+ V	&	F	&	F \\
+ F	&	V	&	V \\
+ F	&	V	&	F
+\end{tabular}
+
+
+
+\textbf{Disjunção inclusiva}\\
+\begin{tabular}{c|c|c}
+$\phi$ & $\vee$ & $\psi$ \\
+ \hline
+ V	&	V	&	V  \\
+ V	&	V	&	F \\
+ F	&	V	&	V \\
+ F	&	F	&	F
+\end{tabular}
+
+\textbf{Conjunção}\\
+\begin{tabular}{c|c|c}
+$\phi$ & $\wedge$ & $\psi$ \\
+ \hline
+ V	&	V	&	V  \\
+ V	&	F	&	F \\
+ F	&	F	&	V \\
+ F	&	F	&	F
+\end{tabular}
+
+\textbf{Equivalência}\\
+\begin{tabular}{c|c|c}
+$\phi$ & $\leftrightarrow$ & $\psi$ \\
+ \hline
+ V	&	V	&	V  \\
+ V	&	F	&	F \\
+ F	&	F	&	V \\
+ F	&	V	&	F
+\end{tabular}
+
+\end{multicols}
+
+\subsection{Regras de Inferência}
+
+\subsubsection{Regras Básicas}
+As regras mais básicas relativas a um operador são as que dizem o que garante a
+afirmação de uma frase com aquele operador como operador principal (regras de
+introdução) e as que dizem o que pode ser inferido de uma frase com aquele operador
+como operador principal (regras de eliminação).
+
+\begin{multicols}{2}
+
+\textbf{Introdução da Implicação}
+
+
+\alwaysNoLine
+\AxiomC{[$\phi$]}
+\UnaryInfC{\vdots}
+\UnaryInfC{$\psi$}
+\alwaysSingleLine
+\RightLabel{\scriptsize $\rightarrow{}I$}
+\UnaryInfC{$\phi\rightarrow\psi$}
+\DisplayProof
+
+\textbf{Modus Ponens \emph{ou} Eliminação da Implicação}
+
+
+\AxiomC{$\phi\rightarrow\psi$}
+\AxiomC{$\phi$}
+\RightLabel{\scriptsize $\rightarrow{}E$}
+\BinaryInfC{$\psi$}
+\DisplayProof
+
+\textbf{Introdução da Conjunção}
+
+
+\AxiomC{$\phi$}
+\AxiomC{$\psi$}
+\RightLabel{\scriptsize $\wedge{}I$}
+\BinaryInfC{$\phi\wedge\psi$}
+\DisplayProof
+
+\textbf{Eliminação da Conjunção}
+
+
+\AxiomC{$\phi\wedge\psi$}
+\RightLabel{\scriptsize $\wedge{}E$}
+\UnaryInfC{$\phi$}
+\DisplayProof
+
+\textbf{Introdução da Disjunção}
+\AxiomC{$\phi$}
+\RightLabel{\scriptsize $\vee{}I$}
+\UnaryInfC{$\phi\vee\psi$}
+\DisplayProof
+
+% \textbf{Eliminação da Disjunção}\footnote{A lógica é: se você pode derivar a mesma
+% consequência das duas partes da disjunção então tanto faz qual das duas é
+% verdadeira, você pode passar direto para a consequência.}
+% \AxiomC{$\phi$}
+% \
+
+\textbf{Introdução da Negação}\footnote{O símbolo $\bot$ representa uma contradição, um
+absurdo. A regra diz que se de uma hipótese você é capaz de derivar uma contradição,
+então você pode concluir a negação dessa hipótese. Essa contradição pode ser uma
+contradição absoluta, mas também uma contradição com uma premissa dada. Um exemplo de
+uso dessa regra é a justificação da regra do \emph{modus tollens} --
+$\{\phi\rightarrow\psi, \neg\psi\}\vdash\neg\phi$ -- a partir da introdução da negação e
+da introdução da implicação:
+
+\AxiomC{$\phi\rightarrow\psi$}
+\AxiomC{[$\phi$]$^{1}$}
+\BinaryInfC{$\psi$}
+\AxiomC{$\neg\psi$}
+\BinaryInfC{$\bot$}
+\UnaryInfC{$\neg\phi$}
+\DisplayProof
+
+}
+
+\alwaysNoLine
+\AxiomC{[$\phi$]}
+\UnaryInfC{\vdots}
+\UnaryInfC{$\bot$}
+\alwaysSingleLine
+\RightLabel{\scriptsize $\neg{}I$}
+\UnaryInfC{$\neg\phi$}
+\DisplayProof
+
+\textbf{Introdução da Equivalência}
+
+\AxiomC{$\phi\rightarrow\psi$}
+\AxiomC{$\psi\rightarrow\phi$}
+\RightLabel{\scriptsize $\leftrightarrow{}I$}
+\BinaryInfC{$\phi\leftrightarrow\psi$}
+\DisplayProof
+
+\textbf{Eliminação da Equivalência}\footnote{Você pode derivar qualquer uma das
+implicações. Aqui só aparece uma delas, por causa do espaço}
+
+\AxiomC{$\phi\leftrightarrow\psi$}
+\RightLabel{\scriptsize $\leftrightarrow{}E$}
+\UnaryInfC{$\phi\rightarrow\psi$}
+\DisplayProof
+
+\end{multicols}
+
+\subsubsection{Regras Auxiliares}
+
+\begin{multicols}{2}
+{
+\textbf{Modus Tollens}
+
+\AxiomC{$\phi\rightarrow\psi$}
+\AxiomC{$\neg\psi$}
+\RightLabel{\scriptsize $MT$}
+\BinaryInfC{$\neg\phi$}
+\DisplayProof
+}
+
+{
+\textbf{Silogismo Disjuntivo}
+
+\AxiomC{$\phi\vee\psi$}
+\AxiomC{$\neg\phi$}
+\RightLabel{\scriptsize $SD$}
+\BinaryInfC{$\psi$}
+\DisplayProof
+}
+
+{
+\textbf{Silogismo Hipotético}
+
+\AxiomC{$\phi\rightarrow\psi$}
+\AxiomC{$\psi\rightarrow\sigma$}
+\RightLabel{\scriptsize $SH$}
+\BinaryInfC{$\phi\rightarrow\sigma$}
+\DisplayProof
+}
+
+{
+\textbf{Substituição de Equivalentes}\footnote{Só um atalho para a inferência completa
+que seria:
+
+\AxiomC{$\phi\leftrightarrow\psi$}
+\RightLabel{\scriptsize $\leftrightarrow{}E$}
+\UnaryInfC{$\phi\rightarrow\psi$}
+\AxiomC{$\phi$}
+\RightLabel{\scriptsize $\rightarrow{}E$}
+\BinaryInfC{$\psi$}
+\DisplayProof
+}
+
+\AxiomC{$\phi$}
+\AxiomC{$\phi\leftrightarrow\psi$}
+\RightLabel{\scriptsize $Eq$}
+\BinaryInfC{$\psi$}
+\DisplayProof
+}
+
+\end{multicols}
+
+\subsubsection{Equivalências}
+
+As equivalências da lista seguinte podem ser usadas como axiomas a fim de simplificar
+as provas. Para simplificar bastante mesmo, eu aceitarei a inferência imediata entre
+fórmulas equivalentes quando for assinalada a regra utilizada. Ver exemplo
+\ref{bigdemo} abaixo.
+
+\begin{multicols}{2}
+\begin{description}
+\setlength{\itemsep}{0pt}
+ \item[De Morgan (DM)] $\neg{\phi\wedge\psi}\leftrightarrow{\neg\phi\vee\neg\psi}$
+ \item[De Morgan (DM)] $\neg(\phi\vee\psi)\leftrightarrow(\neg\phi\wedge\neg\psi)$
+ \item[Comutação (Com)] $(\phi\vee\psi)\leftrightarrow(\psi\vee\phi)$
+ \item[Comutação (Com)] $(\phi\wedge\psi)\leftrightarrow(\psi\wedge\phi)$
+ \item[Associação (Assoc)]
+$(\phi\vee(\psi\vee\sigma))\leftrightarrow((\phi\vee\psi)\vee\sigma)$
+ \item[Associação (Assoc)]
+$(\phi\vee(\psi\wedge\sigma))\leftrightarrow((\phi\wedge\psi)\vee\sigma)$
+\item[Distribuição (Dist)]
+$(\phi\wedge(\psi\vee\sigma))\leftrightarrow((\phi\wedge\psi)\vee(\phi\wedge\sigma))$
+\item[Distribuição (Dist)]
+$(\phi\vee(\psi\wedge\sigma))\leftrightarrow((\phi\vee\psi)\wedge(\phi\vee\sigma))$
+ \item[Dupla Negação (DN)] $\phi\leftrightarrow\neg\neg\phi$
+ \item[Transposição (Transp)]
+$(\phi\rightarrow\psi)\leftrightarrow(\neg\psi\rightarrow\neg\phi)$
+ \item[Impl. Material (IM)] $(\phi\rightarrow\psi)\leftrightarrow(\neg\phi\vee\psi)$
+ \item[Tautologia (Taut)] $\phi\leftrightarrow(\phi\vee\phi)$
+ \item[Tautologia (Taut)] $\phi\leftrightarrow(\phi\wedge\phi)$
+\end{description}
+
+\end{multicols}
+
+
+\section{Exercícios}
+\renewcommand{\theenumi}{\roman{enumi}}
+
+\subsection{Tabelas Verdade}
+
+\begin{exrcc}
+Faça a tabela verdade dos seguintes conectivos:
+\begin{enumerate}
+\setlength{\itemsep}{0pt}
+ \item Disjunção Exclusiva
+ \item Nem $\phi$, nem $\psi$
+\end{enumerate}
+\end{exrcc}
+
+\begin{exrcc}
+Com a negação e qualquer conectivo binário é possível definir os demais
+conectivos. Por exemplo, a implicação $\phi\rightarrow\psi$ pode ser definida em termos
+da conjunção como $\neg(\phi\wedge\neg\psi)$, pois ela significa que o antecedente não
+pode ocorrer sem o consequente. A tabela verdade das duas fórmulas é exatamente a mesma.
+Sendo assim, reescreva as seguintes fórmulas usando somente os conectivos indicados
+mais a negação. 
+
+\begin{enumerate}
+\setlength{\itemsep}{0pt}
+ \item $\phi\rightarrow\psi$, disjunção
+ \item $\neg(\phi\vee\neg\neg\psi)$, implicação
+ \item $\phi\rightarrow\psi$, implicação
+ \item $\phi\leftrightarrow\neg\psi$, disjunção
+\end{enumerate}
+
+\end{exrcc}
+
+
+
+
+
+
+\begin{exrcc}
+Faça a tabela verdade das seguintes fórmulas e determine se elas são tautologias,
+contradições ou frases contingentes
+\label{tabvcompl}
+
+
+\begin{exmpl}
+Exemplo com 3 proposições, para mostrar que a fórmula
+$(\phi\vee(\psi\vee\sigma))\leftrightarrow((\phi\vee\psi)\vee\sigma)$ é uma tautologia:
+
+\begin{center}
+% use packages: array
+\begin{tabular}[c]{lllllllllll}
+$(\phi$ & $\vee$ & $(\psi$ & $\vee$ & $\sigma))$ & $\leftrightarrow$ & $((\phi$ & $\vee$
+& $\psi)$ & $\vee$ & $\sigma)$ \\
+V & V & V & V & V & V & V & V & V & V & V \\ 
+V & V & V & V & F & V & V & V & V & V & F \\ 
+V & V & F & V & V & V & V & V & F & V & V \\ 
+V & V & F & F & F & V & V & V & F & V & F \\ 
+F & V & V & V & V & V & F & V & V & V & V \\ 
+F & V & V & V & F & V & F & V & V & V & F \\ 
+F & V & F & V & V & V & F & F & F & V & V \\ 
+F & F & F & F & F & V & F & F & F & F & F
+\end{tabular}
+\end{center}
+\end{exmpl}
+
+
+\begin{enumerate}
+\setlength{\itemsep}{0pt}
+ \item $(\neg{}p\vee{}q)\leftrightarrow(q\rightarrow{}p)$
+ \item $(\phi\rightarrow\neg\phi)\leftrightarrow\neg\phi$
+ \item $\neg(\phi\rightarrow\neg\phi)$
+ \item
+$(\phi\rightarrow(\psi\rightarrow\sigma))\leftrightarrow((\phi\wedge\psi)\rightarrow
+\sigma)$
+\item $(\phi\vee\psi)\rightarrow\neg(\phi\wedge\psi)$
+\item $((\phi\vee\psi)\wedge\neg\psi)\rightarrow\phi$
+\item $((\phi\vee\psi)\wedge\psi)\rightarrow\neg\phi$
+\item $((\phi\vee\psi)\wedge\neg\psi)\rightarrow\neg\phi$
+\item $\neg(\phi\vee\psi)\leftrightarrow(\neg\phi\wedge\neg\psi)$
+\item
+$((\phi\wedge\psi)\vee\sigma)\leftrightarrow(\sigma\rightarrow(\psi\rightarrow\phi))$
+\item
+$((\phi\wedge\psi)\rightarrow\sigma)\leftrightarrow(\psi\rightarrow(\phi\rightarrow
+\sigma))$
+\item
+$((\phi\rightarrow\sigma)\wedge(\psi\rightarrow\sigma))\leftrightarrow((\phi\vee\psi)
+\rightarrow\sigma)$
+\end{enumerate}
+\end{exrcc}
+
+\vspace{3em}
+Um método mais rápido para testar se uma determinada fórmula é uma tautologia ou não é
+fazer a tabela-verdade de trás pra frente tentando determinar se há uma combinação de
+valores que torna a fórmula falsa, quer dizer, ao invés de atribuir os valores das
+partes e ir calculando o valor do todo, como na maneira comum de fazer as
+tabelas-verdade, atribuímos o valor F para a fórmula toda e tentamos determinar que
+valores as partes teriam. Se for possível determinar o valor de todas as partes, a
+fórmula é falsificável, isto é, existe uma combinação de valores que a torna falsa e,
+portanto, ela não é uma tautologia. Se, durante o processo, acontece de atribuirmos os
+valores V e F para uma mesma fórmula, incorremos em contradição e se nos contradizemos
+ao tentar falsificar uma fórmula isso significa que a fórmula é uma verdade lógica.
+
+\begin{exmpl}
+\label{testcont}
+
+Testando uma fórmula contingente: $(\phi\vee\psi)\rightarrow(\psi\wedge\phi)$
+
+\begin{description}
+ \item[Primeiro Passo] Atribuímos F à fórmula toda. Como o operador principal é uma
+implicação e só há um caso em que a implicação é falsa, sabemos que o antecedente é V e
+o consequente, F.
+\item[Segundo Passo] Procuramos determinar se há valores de $\phi$ e $\psi$ tais que
+$\phi\vee\psi$ seja verdadeira e $\psi\wedge\phi$ seja falsa. A primeira fórmula é
+verdadeira em três casos: $\langle{}V,V{}\rangle$, $\langle{}V,F{}\rangle$,
+$\langle{}F,V{}\rangle$.\footnote{Esses símbolos são pares ordenados dos valores das
+fórmulas. No caso, o primeiro item é o valor de $\phi$ e o segundo o valor de $\psi$.} A
+segunda fórmula é falsa em três casos: $\langle{}V,F{}\rangle$, $\langle{}F,V{}\rangle$,
+$\langle{}F,F{}\rangle$
+\item[Terceiro Passo] Há duas combinações de valores -- $\langle{}V,F{}\rangle$,
+$\langle{}F,V{}\rangle$ -- que tornam a primeira fórmula verdadeira e a segunda, falsa,
+tornando o todo falso. Portanto a frase é falsificável e, portanto, \emph{não} é uma
+tautologia
+\end{description}
+
+\end{exmpl}
+
+\begin{exmpl}
+\label{testtauto}
+Testando uma fórmula tautológica: $(\phi\wedge\psi)\rightarrow(\psi\vee\phi)$
+
+Como acima. Para a fórmula toda ser falsa $(\phi\wedge\psi)$
+deve ser verdadeira e $(\psi\vee\phi)$, falsa. Há só um caso em que
+$(\phi\wedge\psi)$ é verdadeira: quando $\phi$ e $\psi$ são verdadeiras. E também só há
+um caso em que $(\psi\vee\phi)$
+é falsa: quando ambas os disjuntos são falsos. Ora, nota-se aí claramente que para a
+frase inteira ser falsa seria preciso que tanto $\phi$ quanto $\psi$ fossem verdadeiras
+e falsas ao mesmo tempo, o que não é possível. Logo, não é possível a frase inteira ser
+falsa, donde se segue que ela é uma tautologia. 
+
+ 
+\end{exmpl}
+
+\begin{exrcc}
+Pratique esse método com as fórmulas do exercício \ref{tabvcompl}
+\end{exrcc}
+
+\begin{exrcc}
+ Use esse método para testar se as fórmulas abaixo são uma tautologia ou não:
+
+\begin{enumerate}
+\renewcommand{\theenumi}{\roman{enumi}}
+ \item $(\phi\wedge(\psi\rightarrow\phi))\rightarrow\psi$
+ \item $(\phi\vee\psi)\rightarrow(\sigma\rightarrow\sigma)$
+ \item $(\phi\wedge(\psi\vee\neg\phi)$
+\end{enumerate}
+
+ 
+\end{exrcc}
+
+\begin{exrcc}
+ Seguindo a lógica do método acima, qual seria o método para mostrar que uma
+determinada fórmula é uma contradição?
+\end{exrcc}
+
+
+\subsection{Demonstração}
+
+O símbolo $\vdash$ representa a relação de implicação entre premissas e conclusão ou,
+em outras palavras, que a conclusão, no lado direito do símbolo, pode ser demonstrada a
+partir das premissas, no lado esquerdo do símbolo, mediante a aplicação sucessiva das
+regras de inferência expostas acima. 
+Assim, por exemplo, a expressão $\{p, q\}\vdash{}p\wedge{}q$ expressa a idéia de que a
+fórmula $p\wedge{}q$ é derivável do conjunto de premissas $\{p, q\}$ da mesma forma que
+a expressão $\{p\rightarrow{}q, p\}\vdash{}q$ diz que as premissas $\{p\rightarrow{}q,
+p\}$ permitem inferir a fórmula $q$, o que é feito por meio da aplicação da regra do
+\emph{modus ponens}. Quando o símbolo é usado sem nenhum conjunto de premissas do lado
+esquerdo, isso significa que a fórmula é derivável de um conjunto vazio de premissas,
+ou seja, que ela é demonstrável mesmo sem assumir como dada nenhuma outra frase e,
+portanto, é uma verdade lógica. Por exemplo, $\vdash{}p\rightarrow{}p\vee{}q$. É
+interessante notar que para deduzir essa fórmula é preciso assumir $p$ como hipótese,
+para então aplicar a regra da introdução da disjunção e, em seguida, a regra da
+introdução da implicação e ``descartar'' a hipótese:
+
+ \AxiomC{$[p]^{1}$}
+ \RightLabel{\scriptsize $I\vee$}
+ \UnaryInfC{$p\vee{}q$}
+\RightLabel{\scriptsize $I\rightarrow$, descarte $1$ }
+\UnaryInfC{$p\rightarrow{}p\vee{}q$}
+ \DisplayProof
+
+Quando as hipóteses são
+descartadas (incorporadas a uma implicação), elas não constam no conjunto de premissas;
+quando não são descartadas, têm
+que constar. 
+
+\begin{exmpl}
+\label{bigdemo}
+
+Provar que $\{(\phi\vee\neg\psi)\vee\sigma,
+\neg\phi\vee(\psi\wedge\neg\phi)\}\vdash\psi\rightarrow\sigma$. Aplicando a regra da
+distribuição à segunda premissa, obtemos
+$(\neg\phi\vee\psi)\wedge(\neg\phi\vee\neg\phi)$. Se temos uma conjunção, podemos
+inferir uma parte dela: $\neg\phi\vee\neg\phi$. Ora, isso é equivalente a $\neg\phi$
+somente. Aplicando a regra da associação à primeira premissa obtemos
+$\phi\vee(\neg\psi\vee\sigma)$. Aplicando a regra do silogismo disjuntivo a essa
+conclusão e à conclusão anterior -- $\neg\phi$ -- obtemos $\neg\psi\vee\sigma$. E
+usando a equivalência da Implicação Material, obtemos $\psi\rightarrow\sigma$, que é o
+que queríamos demonstrar. 
+
+\AxiomC{$\neg\phi\vee(\psi\wedge\neg\phi)$}
+\RightLabel{\scriptsize $Dist$}
+\UnaryInfC{$(\neg\phi\vee\psi)\wedge(\neg\phi\vee\neg\phi)$}
+\RightLabel{\scriptsize $\wedge{}E$}
+\UnaryInfC{$\neg\phi\vee\neg\phi$}
+\RightLabel{\scriptsize $Taut$}
+\UnaryInfC{$\neg\phi$}
+\AxiomC{$(\phi\vee\neg\psi)\vee\sigma$}
+\RightLabel{\scriptsize $Assoc$}
+\UnaryInfC{$\phi\vee(\neg\psi\vee\sigma)$}
+\RightLabel{\scriptsize $SD$}
+\BinaryInfC{$\neg\psi\vee\sigma$}
+\RightLabel{\scriptsize $IM$}
+\UnaryInfC{$\psi\rightarrow\sigma$}
+\DisplayProof
+\end{exmpl}
+
+\begin{exrcc}
+ \label{demformal}
+
+
+Usando as regras de inferência e as equivalências, demonstre as seguintes
+implicações. Lembre-se: quando o conjunto de premissas for vazio, todas as hipóteses
+devem ser descartadas, isto é, transformadas em antecedentes de uma implicação. Quando
+o conjunto de premissas não for vazio, as mesmas podem ser usadas sem descarte
+
+\begin{enumerate}
+\setlength{\itemsep}{0pt} 
+\item $\vdash(p\rightarrow{}q)\rightarrow(\neg{}q\rightarrow\neg{}p)$
+ \item $\{p\rightarrow\neg{}q,{}q\vee{}r\}\vdash{}p\rightarrow{}r$
+ \item $\{\neg\phi\vee\psi, \phi\}\vdash{}\psi$
+ \item $\vdash\phi\rightarrow(\psi\rightarrow\phi)$
+ \item $\vdash(\phi\wedge\psi)\rightarrow\neg(\phi\rightarrow\neg\psi)$
+ \item $\neg(\phi\wedge\neg\psi), \phi\vdash\psi$
+ \item $\{a\rightarrow{}b, b\rightarrow{}c, c\rightarrow{}a,
+a\rightarrow{}\neg{}a\}\vdash\neg{}a\wedge\neg{}c$
+\item $\{(\epsilon\vee\gamma)\rightarrow(\delta\wedge(\beta\wedge\lambda)),
+\gamma\}\vdash\delta\wedge\beta$
+\end{enumerate}
+\end{exrcc}
+
+
+
+
+\emph{Formalize os seguintes argumentos, isto é, construa uma prova formal deles}
+
+\textbf{Exemplo}: Ou o gerente não notou  a mudança, ou ele a aprova. Ora, ele notou a
+mudança muito bem. Portanto, ele deve aprová-la.
+
+Primeira premissa: \textit{Ou o gerente não notou  a mudança, ou ele a aprova}.--
+$\neg\phi\vee\psi$
+
+Segunda premissa: \textit{Ele notou a mudança} -- $\phi$
+
+Conclusão: \textit{Ele a aprova} -- $\psi$
+
+Prova:\footnote{Se parecer estranho a alguém a aplicação do silogismo disjuntivo
+note-se que $\neg\neg\phi$ é a negação de $\neg\phi$ e, portanto, no fundo a forma do
+silogismo disjuntivo $\{\neg\phi\vee\psi,\neg\neg\phi\}\vdash\psi$ é a mesma do
+silogismo $\{\phi\vee\psi,\neg\phi\}\vdash\psi$}
+
+\AxiomC{$\phi$}
+ \RightLabel{\scriptsize $\phi\leftrightarrow\neg\neg\phi$}
+ \UnaryInfC{$\neg\neg\phi$}
+ \AxiomC{$\neg\phi\vee\psi$}
+\RightLabel{\scriptsize Sil.Disj.}
+\BinaryInfC{$\psi$}
+ \DisplayProof
+
+
+\begin{enumerate}
+ \item O oxigênio do tubo ou combinou-se com o filamento para formar óxido ou
+evaporou-se completamente. O oxigênio do tubo não pode ter-se evaporado completamente.
+Portanto, o oxigênio do tubo combinou-se com o filamento.
+\item Se um estadista compreende que suas opiniões anteriores eram erradas e não
+altera sua política, torna-se culpado de enganar seu povo; se altera a política,
+expõe-se a que o acusem de vira-casaca. Obviamente, das duas uma: ou ela muda de
+política, ou não muda. Portanto, resulta que ou ele é culpado de enganar seu povo ou
+expõe-se à acusação de vira-casaca.
+\item Se a cidadania romana tivesse sido uma garantia das liberdades civis, os
+cidadãos romanos teriam gozado de liberdade religiosa. Se os cidadãos romanos tivessem
+gozado de liberdade religiosa, então, os primeiros cristãos não teriam sido
+perseguidos. Mas os primeiros cristão foram perseguidos. Portanto, a cidadania romana
+não pode ter sido uma garantia de direitos civis.
+\item Se a vítima tinha dinheiro nos bolsos, então o motivo do crime não foi roubo. Mas
+o motivo tem que ter sido roubo ou vingança. Portanto, o motivo do crime deve ter sido
+vingança.
+\item Se Jones receber a mensagem, ele virá, desde que esteja interessado. Embora não
+tenha vindo, ainda está interessado. Portanto, não recebeu a mensagem.
+
+\end{enumerate}
+
+\begin{exrcc}
+ 
+Os seguintes argumentos estão incompletos, no sentido de que sua validade depende
+de premissas implícitas. Formalize os argumentos e indique que premissas são
+essas\footnote{Você pode forçar um pouco a sinonímia entre as frases a fim de tornar
+os argumentos mais simples, mas também não exagere}:
+
+\begin{enumerate}
+ \item Se o caixa tivesse apertado o botão de alarme, o cofre forte teria se
+fechado e a polícia teria sido avisada imediatamente. Se a polícia tivesse sido
+avisada logo, teria pego os assaltantes. Por isso, o caixa não deve ter apertado o
+alarme.
+\item Obviamente só há duas alternativas: ou o criminoso é estranho à família e veio de
+fora da residência ou ele já estava dentro da casa e, portanto, alguém de confiança
+da família está envolvido. Mas a porta não foi arrombada, donde se segue que se o
+assaltante veio de fora então contou com a ajuda de alguém de dentro da casa. Portanto,
+de um jeito ou de outro, alguém de confiança da casa está envolvido.
+\item Se eu pagar ao alfaiate, ficarei sem dinheiro, mas preciso de dinheiro para levar
+minha noiva ao baile e se ela não for ao baile vai ficar muito chateada comigo. Mas,
+ sem o terno não posso ir ao baile. Portanto, de um jeito ou de outro
+minha noiva irá ficar chateada comigo!
+\item Deus não existe, porque a existência do Mal é incompatível com a existência de
+um ser onisciente, onipotente e bondoso. 
+\end{enumerate}
+\end{exrcc}
+
+\subsection{Validade Semântica}
+
+Nós vimos acima a aplicação de uma noção de demonstração que não recorre às noções de
+verdade ou falsidade: uma fórmula é derivável de outra(s) segundo essa concepção se ela
+pode ser obtida dessa(s) outra(s) a partir da aplicação das regras de inferência. Mas
+também temos uma noção semântica de consequência lógica, a que aprendemos no começo do
+curso: uma fórmula se segue de um conjunto de premissas se não pode ser falsa quando
+estas são verdadeiras. Assim, temos um método simples para testar a validade de um
+argumento é testar se é possível ocorrer de as premissas serem verdadeiras e a
+conclusão, falsa. Em termos da lógica proposicional isso significa: o argumento será
+\emph{inválido} se existir uma atribuição de valores-verdade às frases atômicas que
+torne as premissas verdadeiras e a conclusão, falsa. E, inversamente, será
+\emph{válido} se não for possível atribuir um valor-verdade para cada frase atômica sem
+entrar em contradição. Quer dizer, quando pegamos um argumento válido e tentamos
+encontrar valores de verdade que tornam as premissas verdadeiras e a conclusão falsa
+acabamos tendo que atribuir valores-verdade contrários a uma mesma frase. A técnica é
+parecida com a utilizada para testar se uma frase é uma tautologia ou não (ver exemplos
+\ref{testcont} e \ref{testtauto} ), só que agora fazemos com várias frases e seus
+componentes.
+
+\begin{exmpl}
+Mostrar que o argumento $\{A\rightarrow{}B, C\rightarrow{}D,
+A\vee{}D\}\vdash{}B\vee{}C$ é inválido.
+
+Se o argumento é inválido é possível encontrar valores de A, B, C e D tais que as três
+premissas -- $A\rightarrow{}B, C\rightarrow{}D,
+A\vee{}D$ -- sejam verdadeiras e a conclusão -- $B\vee{}C$ -- falsa. Raciocinemos. Se a
+conclusão $B\vee{}C$ for falsa, tanto $B$ quanto $C$ são falsas, pois esse é o único
+caso em que a disjunção é falsa. Se $B$ é falsa, $A\rightarrow{}B$ só pode ser
+verdadeira se $A$ for falsa. E se $C$ é falsa, então $C\rightarrow{}D$ será
+verdadeira, não importando o valor-verdade de $D$. Por fim, se $A$ é falsa, então, para que
+$A\vee{}D$ seja verdadeira, é preciso que $D$ seja verdadeira. Com isso definimos valores para 
+cada frase atômica tais que as premissas se tornam verdadeiras e a conclusão, falsa, mostrando, 
+assim, que o argumento é inválido. Colocando o exemplo numa tabela:
+
+\begin{center}
+% use packages: array
+\begin{tabular}[c]{cccccccc}
+$A$ & $B$ & $C$ & $D$ & $A\rightarrow{}B$ & $C\rightarrow{}D$ & $A\vee{}D$ & $B\vee{}C$
+\\
+\hline
+F	&	F	&	F	& V &	V	&	V	&
+V	&	F
+
+\end{tabular}
+\end{center}
+
+
+\end{exmpl}
+
+\begin{exmpl}
+Mostrar que o argumento $\{(\alpha\vee\beta)\rightarrow(\gamma\wedge\delta), 
+\neg\gamma\}\vdash\neg\alpha$ é válido.
+
+Se o argumento é válido, não conseguiremos evitar a contradição ao tentarmos determinar
+valores de $\alpha$, $\beta$, $\gamma$ e $\delta$ tais que as premissas sejam
+verdadeiras e a conclusão, falsa. Raciocinemos. Se a conclusão $\neg\alpha$
+é falsa, então $\alpha$ é verdadeira. Se $\alpha$ é verdadeira, então $\alpha\vee\beta$
+é verdadeira e se é assim, a premissa
+$(\alpha\vee\beta)\rightarrow(\gamma\wedge\delta)$ só pode ser toda verdadeira se
+$\gamma\wedge\delta$ também for, porque esse é o único caso em que uma implicação com
+antecedente verdadeiro é verdadeira. Se $\gamma\wedge\delta$ é verdadeira, então cada
+parte da conjunção é verdadeira. Assim $\gamma$
+é verdadeira. Porém, se a segunda premissa -- $\neg\gamma$ -- também é verdadeira,
+$\gamma$ teria que ser falsa! Assim, para que as duas premissas fossem verdadeiras e a
+conclusão, falsa, seria preciso que $\gamma$ fosse ao mesm tempo verdadeira e falsa, o
+que não pode ocorrer. Portanto, não é possível afirmar as premissas (atribuir valor V a
+elas) e negar a conclusão (atribuir valor F a ela) sem cair em contradição. Logo, o
+argumento é válido. Fazendo a tabela:
+
+\begin{center}
+\begin{tabular}[c]{cccccccccc}
+$\alpha$ & $\beta$ & $\gamma$ & $\delta$ & $\alpha\vee\beta$ & $\gamma\wedge\delta$ &
+$(\alpha\vee\beta)\rightarrow(\gamma\wedge\delta)$ & $\neg\gamma$ & $\neg\alpha$ \\
+\hline
+V	& V/F	&	{\upshape\textbf{X}}	&	V	&	V	&
+V & V & V	&	F
+ 
+\end{tabular}
+\end{center}
+
+Marque com um X a contradição que você encontrar. Basta encontrar uma contradição para
+que se mostre a impossibilidade de afirmar as premissas e negar a conclusão. 
+ 
+\end{exmpl}
+
+\begin{exrcc}
+ Pratique o método acima provando a validade dos argumentos do exercício
+\ref{demformal}. 
+\end{exrcc}
+
+
+\begin{exrcc}
+
+Usando o método acima, demonstre a validade ou invalidade dos argumentos abaixo:
+
+\begin{enumerate}
+\setlength{\itemsep}{0pt}
+ \item $\{\phi\vee\neg\psi, \neg(\neg\sigma\wedge\tau),
+\neg(\neg\phi\wedge\neg\tau)\}\vdash\neg\psi\rightarrow\sigma$
+\item $\{M\rightarrow(N\vee{}O), N\rightarrow(P\vee{}Q), Q\rightarrow{}R,
+\neg(R\vee{}P)\}\vdash\neg{}M$
+\item
+$\{y\rightarrow{}z,\,{}z\rightarrow(y\rightarrow(r\vee{}s)),\,r\leftrightarrow{}s,\,
+\neg(r\wedge{}s)\}\vdash\neg{}y$
+\item $\{(D\wedge{}E)\rightarrow{}F,\,
+(D\rightarrow{}F)\rightarrow{}G\}\vdash{}E\rightarrow{}G$
+\item $\{\neg(e\wedge{}f),\, (\neg{}e\wedge\neg{}f)\rightarrow(g\wedge{}h),\,
+h\rightarrow{}g\}\vdash{}g$
+\end{enumerate}
+
+ 
+\end{exrcc}
+
+\pagebreak
+
+\begin{exrcc}
+O objetivo do curso de lógica é chegar gradualmente na análise de argumentos reais, que
+são muito mais enganosos do que os exemplos mais domesticados dos exercícios acima. Os
+casos abaixo envolvem várias cascas de banana. Responda às perguntas e justifique suas
+respostas usando as técnicas da lógica. No caso de argumentos inválidos, mostre um
+contraexemplo, um argumento da mesma forma, que siga o mesmo raciocínio, mas que tenha
+premissas verdadeiras e conclusão, falsa. 
+
+\begin{enumerate}
+\setlength{\itemsep}{0pt}
+ \item Se a pena de morte detivesse assassinatos, ela seria justificada. Mas dado que
+ela não detém tais crimes, então se segue que ela não é justificada?
+\item Suponha que é verdadeiro que se Zezinho estudar filosofia hoje à noite, ele vai
+reprovar o teste de matemática amanhã e se ele, ao contrário, estudar matemática, ele
+irá reprovar em seu teste de filosofia. Suponha também que ele não pode estudar para os
+dois testes. Disso se segue que Zezinho irá reprovar em pelo menos um dos testes amanhã?
+\item Minha colher está seca e minha colher estaria molhada se eu tivesse mexido meu
+café. E eu não teria mexido meu café a menos que eu tivesse posto açúcar nele. Então,
+eu não devo ter colocado açúcar no café, certo?
+\item Maria diz que não vai pra cama com João a menos que ele se casem. João concorda
+em se casar, mas, na lua de mel, Maria ainda se recusa a ir para a cama com ele. Será
+que ela quebrou sua promessa?
+\item Como sabemos, esferas projetam sombras curvas e a Terra projeta uma sombra curva
+sobre a Lua durante os eclipses lunares. Isto prova que a Terra é esférica?
+\item O presidente da IBM certamente é um homem influente. No entanto, ele não
+conseguiu matricular sua filha na Universidade Whatsamatta. Portanto, é falso, como
+muita gente vem dizendo, que só pessoas com influência conseguem uma vaga na
+Whatsamatta para os seus filhos. Certo?
+\item Uma amiga sua diz ``As notícias de hoje em dia só me deixam deprimida e é ruim
+ficar assim, portanto é ruim ficar assistindo notícias''. O argumento dela é válido?
+\item Você ouve uma pessoa dizendo o seguinte: ``Fulana é uma hipócrita: ela sempre diz
+que o aprendizado é mais importante que a nota, mas ontem passou o dia todo fazendo um
+exercício para nota extra que ela já sabia fazer e que não ia acrescentar em nada ao
+que ela já sabia!''. A pessoa tem razão no seu juízo sobre Fulana?
+\item Alceu diz: ``Os únicos que falam a verdade aqui somos eu e Catulo''. Safo diz
+``Catulo é um mentiroso''. Catulo replica: ``Safo diz a verdade. Ou então é Alceu quem
+mente''. Assumindo que quem mente, mente sempre e quem diz a verdade, diz a verdade
+sempre, que está mentindo e quem está falando a verdade?
+\item Anaximandro diz ``Não se deve confiar em Heráclito''. Parmênides diz:
+``Anaximandro e Heráclito nunca mentem''. Heráclito diz: ``Parmênides disse a
+verdade''. Quem mente e quem diz a verdade?
+\item No Senado Romano o seguinte debate acontece. Marco Antônio diz ``Ou foi Cassius ou
+foi Brutus (ou ambos)''. Cassius responde: ``Não fui eu. Marco Antônio está mentindo''.
+Brutus diz: ``Também não fui eu''. Só um dos três está falando a verdade. Então quem
+foi o culpado? E quem está falando a verdade?
+\end{enumerate}
+
+\end{exrcc}
+
+
+
+
+\end{document}
