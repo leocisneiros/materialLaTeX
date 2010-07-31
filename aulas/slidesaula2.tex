@@ -1,0 +1,406 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{beamerthemesplit}
+\usepackage{url}
+\usepackage{longtable}
+\usepackage{textcomp}
+\usepackage{boxedminipage}
+%% Pacotes Usados para exemplos
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{enumerate}
+
+
+\newcommand{\pacote}[1]{\texttt{\textcolor[rgb]{0.3,0.6,0}{#1}}}
+% \newenvironment{semiverbatim}{\begin{semiverbatim}\color{blue}}{\color{black}\end{semiverbatim}}
+% \renewenvironment{verbatim}{\color{blue}\begin{verbatim}}{\end{verbatim}\color{black}}
+% \newenvironment{block}{\vspace{8pt}\begin{minipage}{\textwidth}}{\end{minipage}\vspace{8pt}}
+\newenvironment{fblock}{\vspace{8pt}\begin{boxedminipage}{\textwidth}}{\end{boxedminipage}\vspace{8pt}}
+
+
+\title{Continuando aula do \LaTeXe}
+\author{Leonardo Cisneiros}
+\institute{Universidade Federal Rural de Pernambuco \\ Unidade Acadêmica de Serra Talhada}
+\date{\today}
+% \setbeamercovered{dynamic}
+\begin{document}
+
+
+\frame{\titlepage}
+
+\section[Outline]{}
+\frame{\tableofcontents}
+
+\input{corposflutuantes}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Índice Remissivo}
+
+\begin{frame}[fragile]
+\frametitle{O programa \texttt{makeindex}}
+
+Para usar o makeindex, inclua no preâmbulo do seu documento os seguintes comandos:
+
+	\begin{semiverbatim}
+		\\usepackage\{makeidx\}
+		\\makeindex
+	\end{semiverbatim}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Marcando as entradas do índice}
+
+	Para indexar uma palavra use o comando \verb!\index{...}! com a palavra como parâmetro. Ex:
+
+	\begin{quotation}
+
+	 {\itshape No século XVI, monges\verb!\index{monge}! 
+	de uma cidade belga, motivados por uma 
+	epidemia\verb!\index{epidemia}! de cólera\verb!\index{cólera}!,
+	 proibiram o consumo de água\verb!\index{H_{2}O}! e 
+	obrigaram a população a tomar somente cerveja\verb!\index{cerveja}!.}
+
+	\end{quotation}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Firulas}
+
+	O comando \verb!\index! permite firulas mais interessantes:
+
+\begin{small}
+\begin{tabular}{l | l}
+\hline
+\textbf{Código} 		& \textbf{Resultado} \\
+\hline
+\verb$\index{cerveja!produção}$  & cerveja, 32, 45, 118-120 \\
+							& \hspace{15pt} produção, 46 \\
+\hline
+\verb$\index{cerveja|(}$		&	\\
+\verb$\index{cerveja|)}$		& cerveja, 8--15  \\
+\hline
+\verb$\index{cerveja|ver {fermentados}}$ & cerveja, \emph{ver} fermentados \\ \\
+\hline
+\verb$\index{cerveja@\textbf{cerveja}}$ & \textbf{cerveja, 32} \\
+\hline 
+\verb$\index{cerveja|textbf}$ & cerveja, \textbf{32} \\
+\hline
+\end{tabular}
+\end{small}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Criando o índice}
+
+\begin{itemize}
+ \item Primeiro processa-se o arquivo .tex usando o programa \pacote{makeindex}: \\
+	\begin{semiverbatim}
+	 makeindex \emph{nomedoarquivosemextensão}
+	\end{semiverbatim}
+ \item Coloca-se o comando \verb!\printindex! no ponto do documento onde o índice deve aparecer.
+\item Processa-se o documento com o \LaTeX novamente. 
+	
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Funcionalidades adicionais}
+
+	\begin{itemize}
+	 \item O programa e pacote \pacote{authorindex} cria índices dos autores citados no documento indicando as páginas onde eles foram citados.
+	\item O pacote \pacote{index} estende as funcionalidades para índices, permitindo, por exemplo, múltiplos índices 
+	\item O programa \pacote{addindex} cria automaticamente as entradas de índices no texto a partir de uma lista de nomes.
+	\item O programa \pacote{forindex} faz algo similar com uma lista de formatação mais simples (mas mais flexível). É escrito numa linguagem esquisita (snobol4).
+	\item Assim ainda dá algum trabalho, por isso o faltava era um script para extrair essa lista de palavras relevantes de uma amostra de textos. Não é difícil de fazer. Fica como exercício.. ;-)
+	\end{itemize}
+
+
+\end{frame}
+
+\section{Apimentando as coisas}
+
+
+\subsection{Cabeçalhos e Rodapés}
+
+\begin{frame}[fragile]
+\frametitle{O comando nativo}
+
+O \LaTeX tem um comando nativo para modificar cabeçalhos: \verb!\pagestyle{...}!
+
+As opções são: 
+
+\begin{itemize}
+ \item \texttt{plain} - só o número da página
+\item \texttt{empty} - Cabeçalho e rodapé vazios, sem número de páginas
+\item \texttt{headings} - Coloca cabeçalhos em cada página definidos pelo estilo do documento.
+\item \texttt{myheadings} - Você especifica o cabeçalho com a ajuda dos comandos \verb!\markboth{...}{...}! ou \verb!\markright{..}!
+\end{itemize}
+\vspace{15pt}
+O Comando \verb!\thispagestyle{...}! permite definir o estilo só para a página atual.
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{O pacote \texttt{fancyhdr}}
+
+O pacote \pacote{fancyhdr} dá mais poderes de formatação sobre cabeçalhos e rodapés, podendo redefinir cada um dos seguintes elementos da página:
+
+\begin{center}
+% use packages: array
+\begin{fblock}
+\noindent\makebox[\textwidth]{Cabeçalho Esq.\hfill
+Cabeçalho Centro\hfill Cabeçalho Dir.}
+\noindent\makebox[\textwidth]{\hrulefill}\\[\baselineskip]
+\noindent\makebox[\textwidth]{\hfill corpo do texto \hfill}\\[\baselineskip]
+\noindent\makebox[\textwidth]{\hrulefill}
+\noindent\makebox[\textwidth]{Rodapé Esq.\hfill
+Rodapé Centro\hfill Rodapé Dir.}
+\end{fblock}
+
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Um exemplo}
+\begin{small}
+\begin{flushleft}
+\begin{fblock}
+\noindent\makebox[\textwidth]{\alert<2>{Seção 2} \hfill
+\hfill \alert<3>{\textbf{A tensão pré-VA}}}
+\noindent\makebox[\textwidth]{\hrulefill}\\[\baselineskip]
+\noindent\makebox[\textwidth]{\hfill corpo do texto \hfill}\\[\baselineskip]
+\noindent\makebox[\textwidth]{\hrulefill}
+\noindent\makebox[\textwidth]{\alert<4>{\itshape \tiny \textcopyleft Leonardo Cisneiros}\hfill
+\alert<5>{\scshape \tiny Serra Talhada, MMVIII} \hfill \alert<6>{23}}
+\end{fblock}
+\end{flushleft}
+\end{small}
+
+\begin{footnotesize}
+\begin{semiverbatim}
+\\pagestyle\{fancy\}
+\alert<2>{\\lhead\{Seção \\thesection\}}
+\\chead\{\}
+\alert<3>{\\rhead\{\textbf\{A Tensão pré-VA\}\}}
+\alert<4>{\\lfoot\{\{\\itshape \\tiny \\textcopyleft Leonardo Cisneiros\}\}}
+\alert<5>{\\cfoot\{\\scshape \\tiny Serra Talhada, 2008\}}
+\alert<6>{\\rfoot\{\\thepage\}}
+\end{semiverbatim}
+\end{footnotesize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Linhas no cabeçalho e rodapé}
+
+Para definir linhas separando o cabeçalho e o rodapé no corpo de texto, use:
+
+\begin{itemize}
+ \item Para o cabeçalho: \\ 
+	\verb!\renewcommand{\headrulewidth}{0.4pt}!
+\item Para o rodapé: \\
+	\verb!\renewcommand{\footrulewidth}{0.4pt}!
+\end{itemize}
+
+O segundo argumento define a espessura da linha. 
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Mais controle}
+
+Algumas classes têm paginação dos dois lados, isto é, as páginas pares e ímpares têm layouts diferentes. Para definir cabeçalhos e rodapés diferenciados use os seguintes comandos:
+
+\begin{itemize}
+ \item \verb!\fancyhead[RO, LE]{texto}! para cabeçalhos
+\item \verb!\fancyfoot[LE,RO]{texto}! para rodapés
+\item \verb!\fancyhf[LEH,ROF]{texto}! para os dois
+\end{itemize}
+
+As letras maiúsculas se referem à posição definida:
+
+\begin{center}
+\begin{footnotesize}
+ \begin{tabular}{|c|c|}
+ \hline
+E & Página Par \\
+O & Página Ímpar \\ 
+\hline
+L & Campo Esquerdo \\
+C & Campo Central \\
+R & Campo Direito \\ 
+\hline
+H & Cabeçalho \\
+F & Rodapé \\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{center}
+
+\end{frame}
+
+% \begin{frame}[fragile]
+% \frametitle{O exemplo anterior}
+% 
+% \begin{small}
+% \begin{flushleft}
+% \begin{fblock}
+% \noindent\makebox[\textwidth]{\alert<2>{Seção 2} \hfill
+% \hfill \alert<3>{\textbf{A tensão pré-VA}}}
+% \noindent\makebox[\textwidth]{\hrulefill}\\[\baselineskip]
+% \noindent\makebox[\textwidth]{\hfill corpo do texto \hfill}\\[\baselineskip]
+% \noindent\makebox[\textwidth]{\hrulefill}
+% \noindent\makebox[\textwidth]{\alert<4>{\itshape \tiny \textcopyleft Leonardo Cisneiros}\hfill
+% \alert<5>{\scshape \tiny Serra Talhada, MMVIII} \hfill \alert<6>{23}}
+% \end{fblock}
+% \end{flushleft}
+% \end{small}
+% 
+% \begin{semiverbatim}
+% \\fancyhead[ 
+% \\fancyfoot[L
+% 
+% \end{semiverbatim}
+% 
+% 
+% 
+% \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Definindo seus comandos}
+
+\subsection{Fontes}
+
+\subsection{Alterando Numeração}
+
+\begin{frame}[fragile]
+\frametitle{Contadores}
+
+Toda numeração automática do \LaTeX tem um contador associado:
+\begin{center}
+% use packages: array
+
+\begin{tabular}{llll}
+
+ part & paragraph & figure & enumi \\ 
+chapter & subparagraph & table & enumii \\ 
+section & page & footnote & enumiii \\ 
+subsection & equation & mpfootnote & enumiv \\ 
+subsubsection &  &  & 
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Imprimindo o contador}
+
+Evoque o contador como argumento de algum desses comandos de formatação:
+\begin{tabular}{lll}
+\verb!\roman{contador}! & \verb!\alph{contador}! & \verb!\arabic{contador}!  \\
+\verb!\Roman{contador}! & \verb!\Alph{contador}! &
+\end{tabular}
+Ex.: para imprimir o número da página em algarismos romanos minúsculos (sabe-se lá para quê), use
+\verb!\roman{page}!
+
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Redefinindo o contador}
+Um uso mais interessante é redefinir o formato do contador. 
+
+O comando que o \LaTeX realmente usa para imprimir o contador tem a forma \verb!\the...! seguido
+do nome do contador, como em \verb!\thefootnote!. Redefina-o como qualquer comando, usando o comando \verb!\renewcommand!:
+
+\begin{semiverbatim}
+\renewcommand{\thesection}{\Roman{section}} 
+\end{semiverbatim}
+
+Redefine a numeração de seção para números romanos maiúsculos.
+
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Um exemplo mais complicado}
+
+Redefinindo mais fundo a hierarquia de seções:
+
+\begin{small}
+\verb!\renewcommand{\thesection}{\Roman{section}}!
+\verb!\renewcommand{\thesubsection}!\ldots\\
+\hspace{100pt}\ldots \verb!{\thesection.\roman{subsection}}!
+\verb!\renewcommand{\thesubsubsection}!\ldots\\
+\hspace{30pt}\ldots\verb!{\thesection.\thesubsection:\alph{subsubsection}}!
+\end{small}
+\linebreak
+As subseções ficariam indicadas por I.i, I.ii, II.iv e as subsubseções por I.ii:a ou V.ix:k
+
+\end{frame}
+
+
+\section{Pacotes e mais pacotes}
+
+\begin{frame}[fragile]
+\frametitle{Pacote \texttt{url}}
+
+Pacote para imprimir URLs, emails e outras URIs. É como o \verb!\verb!, só que permite quebra de linha para as URLs longas. 
+
+\begin{semiverbatim}
+\\usepackage\{url\}
+\vdots 
+\\url\{http://groups.google.com/group/metodologia-si/\}
+\end{semiverbatim}
+\url{http://groups.google.com/group/metodologia-si/} 
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Customizando listas}
+
+O pacote \pacote{enumerate} permite configurar a numeração de listas de maneira simples:
+
+
+	\begin{columns}
+		\column[t]{.5\textwidth}
+			\begin{footnotesize}
+			\begin{semiverbatim}
+			\\begin\{enumerate\}[EX 1:]
+			\\item Primeiro exemplo
+			\\item Segundo exemplo
+				\\begin\{enumerate\}[1$^{a}$ Obs.]
+				\\item lalala
+				\\item lalala
+				\\end\{enumerate\}
+			\\item Terceiro exemplo
+			\\end\{enumerate\}
+			\end{semiverbatim}
+			\end{footnotesize}
+
+		\column[t]{.5\textwidth}
+			\begin{small}
+			\begin{enumerate}[EX 1:]
+			\item Primeiro exemplo
+			\item Segundo exemplo
+				\begin{enumerate}[1$^{a}$ Obs.]
+				\item lalala
+				\item lalala
+				\end{enumerate}
+			\item Terceiro exemplo
+			\end{enumerate}
+			\end{small}
+	\end{columns}
+
+
+
+\end{frame}
+
+
+\end{document}
+    

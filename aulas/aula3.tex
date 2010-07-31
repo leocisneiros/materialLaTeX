@@ -1,0 +1,304 @@
+\documentclass[a4paper,11pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{xypic}
+\usepackage{enumitem}
+\usepackage[mathscr]{euscript}
+\usepackage{bussproofs}
+\usepackage{color}
+\usepackage{graphics}
+\usepackage{microtype}
+\usepackage{times}
+% \usepackage{libertine}
+
+\renewcommand{\ttdefault}{cmtt}
+
+\usepackage{supertabular}
+\usepackage{indentfirst}
+
+\usepackage{url}
+\usepackage{multirow}
+\renewcommand{\sfdefault}{ugq}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pacote e definições de manual para o título de seção afrescalhado
+\usepackage{titlesec}
+\newcommand\secformat[1]{%
+\parbox[b]{.5\textwidth}{\filleft\bfseries #1}%
+\quad\rule[-12pt]{2pt}{50pt}\quad
+{\fontsize{45}{45}\selectfont\thesection}}
+\titleformat{\section}[block]%
+{\filleft\normalfont\sffamily}{}{0pt}{\secformat}
+\titlespacing*{\section}{0pt}{*3}{*2}[1pc]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%opening
+\title{Novos Elementos de \LaTeX}
+\author{Leonardo Cisneiros}
+\newcommand{\dummytext}{%
+Die menschliche Vernunft has das besondere Schicksal in einer
+Gattung ihrer \textsc{Erkenntnisse}: \textit{da\ss{} sie durch
+Fragen belästigt wird, die sie nicht abweisen kann}, denn sie sind
+ihr durch die Natur der Vernunft selbst aufgegeben, \textbf{die sie
+aber auch nicht beantworten kann}, denn sie übersteigen alles
+Vermögen der menschlichen Vernunft
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Macro para gerar as amostras das fontes
+\newcommand{\fontsample}[2]{%
+{\fontfamily{#1}\selectfont
+	\begin{tabular*}{\textwidth}{p{0.65\textwidth}p{
+0.35\textwidth}}
+		{\large\sffamily #2 (#1)}	& 
+							\\\hline
+			&				 \\
+
+		ABCDEFGHIJKLMNOPQRSTUVWXYZ  & 
+		\multirow{2}{7mm}{\fontsize{35}{40}\selectfont
+AaBbCc} \\
+		abcdefghijklmnopqrstuvwxyz1234567890 &  \\
+		\textbf{The Quick Brown Fox Jumps Over the Lazy Dog}
+&
+		\multirow{2}{7mm}{\fontsize{35}{40}\selectfont
+		FfGgKk} \\
+		\textit{The Quick Brown Fox Jumped Over the Lazy Dog}
+& \\
+			&  \\
+		\parbox{0.65\textwidth}{\footnotesize\dummytext} &
+		\parbox{0.35\textwidth}{\fontsize{35}{40}\selectfont
+		MmRrQq\\ SsTtXx} \\
+	\end{tabular*}\vspace{3em}\par
+	}
+}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Controlando a Fonte}
+
+\subsection{Comandos de Baixo Nível}
+
+Toda fonte no \LaTeX tem cinco atributos:
+
+\begin{description}
+\setlength{\itemsep}{0pt} 
+\item[Codificação] Especifica a ordem que os caracteres aparecem na
+fonte. Você só precisa realmente mexer com isso quando se tratar de
+caracteres mais esquisitos e outros alfabetos como grego, cirílico
+etc.
+\item[Família] O nome de uma coleção de fontes. Um design de fonte.
+Quando falamos em \emph{uma} fonte na verdade estamos falando de uma
+\emph{família} de fontes, pois na tipografia correta, as fontes para
+o itálico, o negrito, o small caps, por exemplo, são todas
+distintas, ainda que compartilhem diversos elementos comum de design.
+\item[Série] Indica o peso ou a expansão da fonte. O negrito, p.ex.,
+é uma série.
+\item[Forma] Indica a forma da fonte dentro da família. O itálico é
+uma forma.
+\item[Tamanho] Auto-explicativo\ldots
+\end{description}
+
+Os comandos de mais baixo nível no \LaTeX para definir esses
+atributos são os seguintes:
+
+\begin{description}
+\setlength{\itemsep}{0pt}
+ \item[Codificação da fonte] \verb!\fontencoding{xx}!
+ \item[Família da Fonte] \verb!\fontfamily{xxx}!
+ \item[Série da Fonte] \verb!\fontseries{xx}!
+ \item[Formato da Fonte] \verb!\fontshape{xx}!
+ \item[Tamanho da Fonte] \verb!\fontsize{xx}{xx}!
+\end{description}
+
+Depois de todos os comandos de definição da fonte, use o comando
+\verb!\selectfont! para começar a usá-la. Também lembre-se que o
+comando \verb!\selectfont! faz com que a seleção valha até ser
+revertida ou até encontrar um ``\}'', indicando o final de um grupo. 
+
+As séries são: \texttt{m} Médio, \texttt{b} Negrito,
+\texttt{bx}
+Negrito estendido, \texttt{sb} Semi-negrito, \texttt{c}
+condensado.\marginpar{\footnotesize Série}
+Essas distinções só funcionam se a fonte tiver todos esses formatos
+pre-definidos, o que é difícil nas fontes disponíveis nas
+distribuições normais do \LaTeX e talvez só seja encontrado em
+fontes profissionais bem caras. Assim, normalmente só usaremos o
+negrito normal e aí é melhor usar os comandos \verb!\bfseries! e
+\verb!\textbf{}! para negrito e os comandos \verb!\mdseries! e
+\verb!\textmd{}! para voltar ao texto normal.
+
+Os valores comuns para o formato da fonte são
+\texttt{n} Normal,
+\texttt{it} \textit{Itálico}, \texttt{sl}
+\textsl{Inclinado}\footnote{Note que o itálico não é só a
+inclinação do texto, pois o desenho da fonte é diferente, como fica
+claro na diferença da letra ``a''} e \texttt{sc}
+\textsc{Versalete}.\marginpar{\footnotesize Forma}
+Em todo caso para definir a forma da fonte no meio de um texto é
+mais prático usar os comandos do \LaTeX: para itálico,
+\verb!\textit{}! ou \verb!\itshape!; para inclinado,
+\verb!\textsl{}! ou \verb!\slshape!; para versalete,
+\verb!\textsc{}! ou \verb!\scshape!; e para texto normal (em pé),
+\verb!\textup{}! ou \verb!\upshape!. 
+
+Para tamanho também temos uma série de comandos
+pré-definidos:
+\verb!\tiny! 5pt ({\tiny amostra}), \verb!\scriptsize! 7pt
+({\scriptsize amostra}), \verb!\footnotesize! 8pt ({\footnotesize
+amostra}), \verb!\small! 9pt ({\small amostra}), \verb!\normalsize!
+10pt ({\normalsize amostra}) ------\marginpar{\footnotesize{}Tamanho}
+Para outros tamanhos de fonte,
+você deve usar o comando de baixo nível, indicando no primeiro
+parâmetro o tamanho da fonte em pt e no segundo, o tamanho da fonte
+contando com um espaço entre linhas, o que pode ser importante em
+alguns casos. Com esse comando você tem liberdade para definir
+fontes menores que \verb!\tiny!:
+
+\verb!\fontsize{3}{3}\selectfont!:
+{\fontsize{3}{3}\selectfont Esse aqui é um texto realmente pequeno
+que eu imagino que seja ilegível A NÃO SER QUE APELEMOS PARA
+MAIÚSCULAS!}
+
+E também pode definir letras bem maiores do que \verb!\Huge!.
+
+Por exemplo, com \verb!\fontsize{70}{70}\selectfont!:
+
+{\fontsize{70}{70}\selectfont Texto grande!}
+\vspace{2em}
+
+Codificação da fonte não é algo com o qual
+você terá que lidar com
+muita freqüência a não ser que se aventure em fazer um texto bilíngüe
+em russo e aramaico.\marginpar{\footnotesize Codificação} No entanto,
+convém ficar avisado da importância
+da codificação quando a fonte se comportar de maneira inesperada e
+alguns caracteres não forem renderizados ou o forem de maneira
+esquisita.
+
+O atributo mais importante e mais utilizado de maneira direta é o da
+família da fonte.\marginpar{\footnotesize Família} As fontes padrão
+do \TeX são nomeadas a partir de um esquema que permite embutir uma
+certa classificação no nome do arquivo e mantê-lo no limite de 8
+caracteres, necessário para garantir sua consistência nos diversos
+sistemas de arquivos. Esses arquivos ficam na pasta
+\texttt{./fonts/afm/} de sua distribuição \TeX/\LaTeX divididos
+dentro dela pelas ``forjas'' que é como se chama quem fabrica uma
+fonte, numa homenagem à época que as fontes eram feitas de chumbo
+fundido. O primeiro caracter do nome da fonte indica a forja, os
+outros dois indicam a família, os outros dois indicam a série e a
+forma, os dois seguintes indicam a codificação e, por fim, um ``c''
+no final indica se a fonte é small caps ou não. Por exemplo, o nome
+da fonte \texttt{phvb8a}, encontrável em
+\texttt{\$TEXMF/fonts/afm/adobe/helvetic/},indica que ela é uma fonte
+da Adobe (\texttt{p}), Helvetica (\texttt{hv}), negrito (\texttt{b})
+de codificação ANSI 8-bits (\texttt{8a}). Porém, para a especificação
+da família bastam os três primeiros caracteres. Assim, se você quiser
+{\fontfamily{phv}\selectfont usar a fonte Helvetica, no meio do
+texto, como agora, basta usar o comando
+\verb!\fontfamily{phv}\selectfont! no início do grupo e
+\emph{alterações na forma} \textbf{ou na série}, como essas, serão
+feitas a partir da família.}
+
+
+
+\subsection{Definindo fontes padrão}
+
+O \LaTeX tem uma série de comandos que carregam as definições padrão
+para as fontes e que podem ser modificados com o comando
+\verb!\renewcommand{}{}!. O comando \verb!\rmdefault! guarda a
+definição da fonte serifada que é usada como a padrão para todo
+documento. Da mesma forma, o comando \verb!\sfdefault! guarda a
+definição da fonte sem-serifa e o \verb!\ttdefault!, o da fonte de
+tamanho fixo. Para redefinir a fonte serifada para Adobe Times, por
+exemplo, use \verb!\renewcommand{\rmdefault}{ptm}! e para definir a
+fonte sem serifa para URW Grotesque, como é o caso nesse documento,
+use \verb!\renewcommand{\sfdefault}{ugq}!.
+
+Outros comandos/variáveis que definem padrões relativos a fontes
+são:\vspace{1em}
+
+\begin{tabular}[l]{rl}
+ \verb!\encodingdefault! & A codificação padrão da fonte principal do
+texto \\
+ \verb!\familydefault! & A família padrão da fonte principal do texto
+\\
+ \verb!\seriesdefault! & A série padrão da fonte principal do texto
+\\
+ \verb!\shapedefault! & A forma padrão da fonte principal do texto \\
+ \verb!\itdefault! & A fonte padrão para o comando \verb!\textit! \\
+ \verb!\bfdefault! & A fonte padrão para o comando \verb!\textbf! \\
+ \verb!\mddefault! & A fonte padrão para o comando \verb!\textmd! \\
+ \verb!\sldefault! & A fonte padrão para o comando \verb!\textsl! \\
+ \verb!\scdefault! & A fonte padrão para o comando \verb!\textsc! \\
+\end{tabular}
+
+\subsection{Pacotes}
+
+A definição do conjunto de fontes padrão de um documento pode ser
+feita de maneira muito mais simples através da invocação de pacotes.
+O pacote \texttt{times} muda o trio \texttt{rm-sf-tt} para Times,
+Helvetica e Courier, respectivamente. O pacote \texttt{newcent},
+muda para New Century Schoolbook, Helvetica e Courier. O pacote
+\texttt{palatino}, para Palatino, Avant Garde e Courier. Para
+ficarmos só nas fontes da Adobe, temos ainda os seguintes pacotes:
+\texttt{bookman}, \texttt{avant}, \texttt{courier} e
+\texttt{zapfchan}. A melhor maneira de descobrir outros é navegando
+pelo \textsc{The \LaTeX{} Font Catalogue}:
+\url{http://www.tug.dk/FontCatalogue/}. 
+
+\section{Amostras de Fonte}
+
+\noindent\fontsample{ccr}{Computer Modern Roman}
+
+\noindent\fontsample{ptm}{Adobe Times New Roman}
+
+\noindent\fontsample{ppl}{Adobe Palatino}
+
+\noindent\fontsample{pbk}{Adobe Bookman Old Style}
+
+\noindent\fontsample{phv}{Adobe Helvetica}
+
+\noindent\fontsample{pag}{Adobe Avant Garde}
+
+\noindent\fontsample{pnc}{Adobe New Century Schoolbook}
+
+\noindent\fontsample{pzc}{Adobe Zapf Chancery}
+
+\noindent\fontsample{bch}{Bitstream Charter}
+
+\noindent\fontsample{ugq}{URW Grotesque}
+
+\noindent\fontsample{pag}{Adobe Avant Garde}
+
+Mais amostras de fontes e informações de como instalá-las e usá-las
+podem ser encontradas no \textsc{The \LaTeX{} Font Catalogue}:
+\url{http://www.tug.dk/FontCatalogue/}. Informações detalhadas sobre
+como criar os arquivos de configuração para instalar fontes que não
+estejam no CTAN podem ser encontradas no documento
+\texttt{fontinstallationguide}. É aquela coisa: instalar fontes no
+\TeX é bom, mas morrer queimado é muito melhor. No entanto, para os
+interessados (e possuidores de arquivos de fontes profissionais),
+pode valer muito a pena e significar um resultado perfeito e
+profissional. A via mais simples para aumentar a base de fontes do
+\TeX de maneira a permitir o uso de fontes do sistema sem nenhuma
+instalação especial é através do XeTeX/XeLaTeX. Mas atentem que usar
+qualquer fonte vagabunda encontrada na internet pode acabar com a
+qualidade tipográfica do documento. A graça de usar o XeLaTeX está
+em poder usar \emph{fontes profissionais} de maneira simples.
+
+\input{definindodimensoes}
+
+\end{document}
